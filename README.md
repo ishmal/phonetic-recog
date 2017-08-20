@@ -1,2 +1,2 @@
-# phonetic-recog
-Experiment with recognition of phonetic alphabets
+# Pickle Lookup
+Provide hands-free callsign lookup using HTML5 voice recognition 
