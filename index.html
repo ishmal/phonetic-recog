@@ -1,5 +1,5 @@
-<html>
 <!DOCTYPE html>
+<html>
 
 <head>
 
@@ -27,13 +27,28 @@
 
 
     
-    <script type="text/javascript" href="recog.js"></script>
+    <script type="text/javascript" src="recog.js"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var trans = new PhoneticInterpreter();
+
+        var btn = document.getElementById("startbtn");
+        var interimTxt = document.getElementById("interim");
+        var finalTxt = document.getElementById("final");
+
+        
+        btn.onclick = function() {
+            trans.start();
+        };
+
+    });
+    </script>
   
 </head>
 
 <body>
 
-  <button onclick="startDictation()">Start</button>
+  <button id="startbtn">Start</button>
   <h4>Interim</h4>
   <p id='interim'></p>
   <h4>Final</h4>
