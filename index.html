@@ -27,16 +27,42 @@
 
 
     
-    <script type="text/javascript" src="recog.js"></script>
+    <script type="text/javascript" src="phonetic.js"></script>
     <script>
+
+
     document.addEventListener("DOMContentLoaded", function() {
         var trans = new PhoneticInterpreter();
 
         var btn = document.getElementById("startbtn");
-        var interimTxt = document.getElementById("interim");
         var finalTxt = document.getElementById("final");
+        var decodedTxt = document.getElementById("decoded");
+        var iframe = document.getElementById("qrzframe");
 
+        function callsignLookup(call) {
+            let rgx = /^\d?[a-zA-Z]{1,2}\d{1,4}[a-zA-Z]{1,4}$/;
+            if (!call.match(rgx)) {
+              return;
+            }
+            let url = "https://www.qrz.com/db/" + call;
+            iframe.src = url;
+        }
+
+        trans.onStart = () => {
+            finalTxt.textContent = "";
+            decodedTxt.textContent = "";
+        };
         
+        trans.onResult = (final, translated) => {
+            finalTxt.textContent = final;
+            decodedTxt.textContent = translated;
+            callsignLookup(translated);
+        };
+
+        trans.onEnd = () => {
+            finalTxt.textContent = "## done";
+        };
+
         btn.onclick = function() {
             trans.start();
         };
@@ -49,10 +75,14 @@
 <body>
 
   <button id="startbtn">Start</button>
-  <h4>Interim</h4>
-  <p id='interim'></p>
   <h4>Final</h4>
   <p id='final'></p>
+  <h4>Decoded</h4>
+  <p id='decoded'></p>
+
+  <iframe id="qrzframe" width="100%" height="700">
+
+  </iframe>
 
 </body>
 
